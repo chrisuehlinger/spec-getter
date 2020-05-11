@@ -44,12 +44,11 @@ function selectText(node) {
     
         await Promise.all([
             showGpus(),
-            showInputs(),
             new Promise(resolve => {
                 checkDisplays();
                 function checkDisplays(){
                     console.log('Checking for displays...')
-                    if(window.stats.displays){
+                    if(window.stats.displays && window.mediaDevicesDone){
                         resolve()
                     } else {
                         requestAnimationFrame(checkDisplays);
@@ -66,7 +65,7 @@ function selectText(node) {
         $('#output').text(JSON.stringify(window.stats, null, 4));
         $('#message').append($button);
     } catch(e) {
-        $('#message').text(`UHOH: ${error}`);
+        $('#message').text(`UHOH: ${e}`);
     }
 
 })();
@@ -82,7 +81,7 @@ async function showGpus(){
     // })
 }
 
-async function showInputs() {
+window.showInputs = async function() {
     let { stats } = window;
     let mediaDevices = await navigator.mediaDevices.enumerateDevices();
     stats.mediaDevices = [];
@@ -115,11 +114,13 @@ async function showInputs() {
             });
         }
     }));
+    window.mediaDevicesDone = true;
 }
 
 window.showDisplays = function (displays){
     console.log('GOTEM', displays);
     window.stats.displays = displays;
+    // window.showInputs();
     // let $displayList = $('#displayList');
     // displays.map(display => {
     //     $displayList.append(`<li>Size: ${display.size.width}x${display.size.height} dppx: ${display.scaleFactor}</li>`);

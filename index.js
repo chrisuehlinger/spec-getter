@@ -1,7 +1,6 @@
 'use strict';
-const os = require("os");
 const path = require('path');
-const {app, BrowserWindow, Menu, screen} = require('electron');
+const {app, BrowserWindow, Menu, screen, systemPreferences} = require('electron');
 /// const {autoUpdater} = require('electron-updater');
 const {is} = require('electron-util');
 const unhandled = require('electron-unhandled');
@@ -10,10 +9,13 @@ const contextMenu = require('electron-context-menu');
 const config = require('./config');
 const menu = require('./menu');
 const packageJson = require('./package.json');
+const log = require('electron-log');
+log.catchErrors();
 
 unhandled();
 // debug();
 contextMenu();
+
 
 app.setAppUserModelId( 'com.chrisuehlinger.spec-getter' );
 // app.setAppUserModelId(packageJson.build.appId);
@@ -33,13 +35,14 @@ app.setAppUserModelId( 'com.chrisuehlinger.spec-getter' );
 let mainWindow;
 
 const createMainWindow = async () => {
+
 	const win = new BrowserWindow({
 		title: app.name,
 		show: false,
 		width: 1280,
 		height: 720,
 		webPreferences:{
-			nodeIntegration: true
+			nodeIntegration: true,
 		}
 	});
 
@@ -74,9 +77,9 @@ app.on('second-instance', () => {
 });
 
 app.on('window-all-closed', () => {
-	if (!is.macos) {
+	// if (!is.macos) {
 		app.quit();
-	}
+	// }
 });
 
 app.on('activate', () => {
@@ -89,10 +92,25 @@ app.on('activate', () => {
 	await app.whenReady();
 	Menu.setApplicationMenu(menu);
 	mainWindow = await createMainWindow();
+	// mainWindow.webContents.openDevTools();
 
-	const favoriteAnimal = config.get('favoriteAnimal');
+	// const favoriteAnimal = config.get('favoriteAnimal');
 	console.log(screen.getAllDisplays());
 	mainWindow.webContents.executeJavaScript(`window.showDisplays(${JSON.stringify(screen.getAllDisplays())})`);
+
+	try {
+		log.info('HERE WE GO');
+		if (is.macos) {
+			await systemPreferences.askForMediaAccess('camera');
+		}
+		log.info('WE DID IT');
+		mainWindow.webContents.executeJavaScript(`window.showInputs()`);
+	} catch(e){
+		log.error('OHNO');
+		log.error(e);
+		mainWindow.webContents.executeJavaScript(`console.log('UHOH!', '${e}')`);
+	}
+
 	// mainWindow.webContents.executeJavaScript(``)
 	// mainWindow.webContents.executeJavaScript(`document.getElementById('cpu').textContent = 'CPU: ${favoriteAnimal}'`);
 	// mainWindow.webContents.executeJavaScript(`document.getElementById('ram').textContent = 'RAM: ${Math.round(10*((os.totalmem())/1073741824))/10}GB'`);

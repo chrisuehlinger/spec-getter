@@ -1,6 +1,6 @@
 {
 	"name": "spec-getter",
-	"productName": "spec getter",
+	"productName": "spec-getter",
 	"version": "1.0.0",
 	"description": "My magnificent app",
 	"license": "MIT",
@@ -22,6 +22,7 @@
 	"dependencies": {
 		"electron-context-menu": "^0.15.0",
 		"electron-debug": "^3.0.0",
+		"electron-log": "^4.1.2",
 		"electron-store": "^5.1.0",
 		"electron-unhandled": "^3.0.0",
 		"electron-updater": "^4.0.6",
@@ -49,7 +50,10 @@
 		"appId": "com.chrisuehlinger.spec-getter",
 		"mac": {
 			"category": "public.app-category.social-networking",
-			"darkModeSupport": true
+      "entitlements": "build/entitlements.mac.plist",
+			"extendInfo": {
+				"NSCameraUsageDescription": "We need camera access to figure out what your webcam's resolution and framerate are."
+			}
 		},
 		"dmg": {
 			"iconSize": 160,
