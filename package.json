@@ -1,7 +1,7 @@
 {
 	"name": "spec-getter",
 	"productName": "spec getter",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"description": "My magnificent app",
 	"license": "MIT",
 	"repository": "chrisuehlinger/spec-getter",
@@ -16,7 +16,7 @@
 		"test": "npm run lint",
 		"start": "electron .",
 		"pack": "electron-builder --dir",
-		"dist": "electron-builder --windows",
+		"dist": "electron-builder",
 		"release": "np"
 	},
 	"dependencies": {

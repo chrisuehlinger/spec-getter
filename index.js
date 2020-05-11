@@ -15,7 +15,8 @@ unhandled();
 // debug();
 contextMenu();
 
-app.setAppUserModelId(packageJson.build.appId);
+app.setAppUserModelId( 'com.chrisuehlinger.spec-getter' );
+// app.setAppUserModelId(packageJson.build.appId);
 
 // Uncomment this before publishing your first version.
 // It's commented out as it throws an error if there are no published versions.
