@@ -28,7 +28,7 @@
 		"electron-updater": "^4.0.6",
 		"electron-util": "^0.13.0",
 		"jquery": "^3.5.1",
-		"systeminformation": "^4.25.1"
+		"systeminformation": "^5.6.4"
 	},
 	"devDependencies": {
 		"electron": "^7.1.1",
