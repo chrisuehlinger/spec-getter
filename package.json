@@ -31,7 +31,7 @@
 		"systeminformation": "^4.25.1"
 	},
 	"devDependencies": {
-		"electron": "^7.1.1",
+		"electron": "^15.5.5",
 		"electron-builder": "^21.2.0",
 		"np": "^5.0.3",
 		"xo": "^0.25.3"
